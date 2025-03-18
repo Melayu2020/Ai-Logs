@@ -1,0 +1,29 @@
+name: Blackbox AI Coding
+
+on:
+  schedule:
+    - cron: '0 18 * * *'  # Runs daily at 6 PM
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  generate_code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Blackbox AI Coding
+        run: python scripts/blackbox_coding.py
+        env:
+          BLACKBOX_API_KEY: ${{ secrets.BLACKBOX_API_KEY }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
