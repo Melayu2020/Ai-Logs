@@ -1,0 +1,29 @@
+name: Perplexity AI Research
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Runs daily at noon
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  research_ai:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Perplexity Research
+        run: python scripts/perplexity_research.py
+        env:
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
